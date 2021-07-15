@@ -1,21 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+<% layout('/layouts/boilerplate') %> 
     <h1>Campgrounds</h1>
     <a href="/campgrounds/new">New</a><br>
     <% for(camp of campgrounds){ %> 
-        <span>
-            <a href="/campgrounds/<%= camp.id%>">
-                <%= camp.title  %> 
-            </a>
-            <%= camp.location  %> 
-        </span><br>
+        <div class="card mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <img class="img-fluid" alt="" src="<%=camp.image%>">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="/campgrounds/<%= camp.id %> "><%= camp.title %></a>
+                        </h5>
+                        <p class="card-text">
+                            <%= camp.description  %> 
+                        </p>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                <%= camp.location  %> 
+                            </small>
+                        </p>
+                        <a class="btn btn-primary" href="/campgrounds/<%= camp.id %> ">View <%= camp.title %></a>
+                    </div>
+                </div>
+            </div>
+        </div>
     <% } %> 
-
-</body>
-</html>

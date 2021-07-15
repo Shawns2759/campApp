@@ -17,18 +17,23 @@ db.once("open", () => {
 
 const seedDB = async () => {
     //clears db
-    // await Campground.deleteMany({})
+    await Campground.deleteMany({})
     const sample = array => array[Math.floor(Math.random()* array.length)]
 
     //lopps 50 times concatonates random city/state then saves it to db using campground model
     for (let i = 1; i < 50; i++){
         const randomNum = Math.floor(Math.random() * 1000);
+        const price = Math.floor(Math.random() * 100);
         let location = await `${cities[randomNum].city}, ${cities[randomNum].state}`
         let name = await `${sample(descriptors)} ${sample(places)}`
-        console.log(name)
+        let image = 'https://source.unsplash.com/collection/483251'
+        let desc = `Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit distinctio libero et doloremque exercitationem, consectetur temporibus quis vitae sunt animi sed unde doloribus quod quae id, voluptate odio, alias cumque?`
         const camp = new Campground({
             title: name,
-            location : location
+            location: location,
+            image: image,
+            description: desc, 
+            price: price
     })
         camp.save();
     }
@@ -38,5 +43,5 @@ const seedDB = async () => {
     console.log(foundCamp)
 }
 seedDB().then(() => {
-    mongoose.connection.close()
+    mongoose.connection.open()
 })
