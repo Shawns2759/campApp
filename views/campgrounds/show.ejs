@@ -22,9 +22,9 @@
 
 
     <div class="col-6">
-      
+
     </div>
-    
+    <form action="/campgrounds/<%= campground.id%>/reviews" method="POST" class="validatedForm" novalidate>
       <h2>**Leave a Review**</h2>
       <div class="mb-1 mt-5">
         <label for="rating" class="mb-3">Rating</label>
@@ -50,6 +50,11 @@
           Rating: <%= review.rating %>
         </h5>
         <p class="card-body"><%= review.body %></p>
+        <span class="border border-black text-end">
+          <form action="/campgrounds/<%= campground.id%>/reviews/<%= review.id%>?_method=DELETE" method="POST">
+            <button class="btn btn-danger">Delete</button>
+          </form>
+        </span>
       </div>
       <% } %>
     </div>
