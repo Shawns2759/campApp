@@ -10,6 +10,7 @@ const CampgroundSchema = new Schema({
     image: String,
     reviews: [
         {
+            //links review collection to this collection by objectid
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Review'
         }

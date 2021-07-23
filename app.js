@@ -65,7 +65,7 @@ app.use((req, res, next) => {
 app.use('/campgrounds', campgrounds)
 app.use('/campgrounds/:id/reviews',reviews)
 
-
+//if no routes match then throw expressErr
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found 404', 404))
 })
