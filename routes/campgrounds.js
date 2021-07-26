@@ -4,6 +4,7 @@ const catchAsync = require('../utils/catchAsync')
 const ExpressError = require('../utils/ExpressError.js')
 const { campgroundSchema, reviewSchema } = require('../schemas')
 const Campground = require('../models/campground')
+const loggedIn = require('../utils/middlewear')
 
 const validateCampground = (req, res, next) => {
     //gets error form campgroundSchema aka validation schema with joi
@@ -22,7 +23,7 @@ router.get('/', async (req, res) => {
     res.render('campgrounds/index.ejs', {campgrounds})
 })
 
-router.get('/new', (req, res) => {
+router.get('/new', loggedIn,(req, res) => {
     res.render('campgrounds/new.ejs')
 })
 router.post('/', validateCampground, catchAsync(async (req, res, next) => {
@@ -41,7 +42,7 @@ router.get('/:id',  catchAsync(async (req, res) => {
     }
     res.render('campgrounds/show.ejs', {campground})
 }))
-router.get('/:id/edit',  catchAsync(async (req, res) => {
+router.get('/:id/edit',  loggedIn,catchAsync(async (req, res) => {
     const {id} = req.params
     const campground = await Campground.findById(id)
     if (!campground) {
@@ -50,7 +51,7 @@ router.get('/:id/edit',  catchAsync(async (req, res) => {
     }
     res.render('campgrounds/edit', {campground})
 }))
-router.put('/:id',  validateCampground,catchAsync(async (req, res) => {
+router.put('/:id', loggedIn, validateCampground,catchAsync(async (req, res) => {
     const { id } = req.params
     const {location, title, description, image, price} = req.body.campground
     const updatedCamp = await Campground.findByIdAndUpdate(id, {
@@ -63,7 +64,7 @@ router.put('/:id',  validateCampground,catchAsync(async (req, res) => {
     req.flash('success','Succesfully Edited Campground')
     res.redirect(`/campgrounds/${updatedCamp.id}`)
 }))
-router.delete('/:id',  catchAsync(async (req, res) => {
+router.delete('/:id', loggedIn,  catchAsync(async (req, res) => {
     const {id} = req.params
     await Campground.findByIdAndDelete(id)
     req.flash('success', 'Deleted Campground')

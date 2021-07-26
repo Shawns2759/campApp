@@ -11,9 +11,15 @@ const { campgroundSchema, reviewSchema } = require('./schemas')
 const session = require('express-session')
 const flash = require('connect-flash')
 // const Review = require('./models/review')
-const campgrounds = require('./routes/campgrounds')
-const reviews = require('./routes/reviews')
 
+// routes
+const campgroundRoutes = require('./routes/campgrounds')
+const reviewRoutes = require('./routes/reviews')
+const userRoutes = require('./routes/users')
+
+const passport = require('passport');
+const LocalStrategy = require('passport-local')
+const User = require('./models/user')
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true,
@@ -38,7 +44,11 @@ app.use(express.urlencoded({ extended: true }))
 //creates alias for query string to make a put request
 app.use(methodOverride('_method'))
 //serves static files from public
-app.use(express.static(path.join(__dirname, 'public')) )
+app.use(express.static(path.join(__dirname, 'public')))
+
+
+
+
 const sessionConfig = {
     secret: 'secret',
     resave: false, 
@@ -52,8 +62,19 @@ const sessionConfig = {
 }
 //makes session and configs it to sessionConfig
 app.use(session(sessionConfig))
-
+//setting up passport
+app.use(passport.initialize())
+app.use(passport.session())
+passport.use(new LocalStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
 app.use(flash())
+
+app.get('/user', async (req, res) => {
+    const user = new User({ email: 'srs@gmail.com}', username: 'srs' } )
+    const newUser = await User.register(user, 'srsPass')
+    res.send(newUser)
+})
 
 app.use((req, res, next) => {
     //sets a local var in views sucess is === success thrown after new form completion check campground routes new 
@@ -62,8 +83,9 @@ app.use((req, res, next) => {
     next()
 })
 //imports campgrounds router form campgrounds and prefixes it with '/campgrounds'
-app.use('/campgrounds', campgrounds)
-app.use('/campgrounds/:id/reviews',reviews)
+app.use('/campgrounds', campgroundRoutes)
+app.use('/campgrounds/:id/reviews', reviewRoutes)
+app.use('/', userRoutes)
 
 //if no routes match then throw expressErr
 app.all('*', (req, res, next) => {
