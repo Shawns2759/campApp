@@ -4,29 +4,24 @@ const router = express.Router({mergeParams: true})
 const catchAsync = require('../utils/catchAsync')
 const ExpressError = require('../utils/ExpressError.js')
 const Review = require('../models/review')
-const { reviewSchema } = require('../schemas')
+
 const Campground = require('../models/campground')
-const loggedIn = require('../utils/middlewear')
+const { loggedIn, validateReview } = require('../utils/middlewear')
 
 router.use(express.urlencoded({ extended: true }))
 
-const validateReview = (req, res, next) => {
-    const { error } = reviewSchema.validate(req.body)
-    if (error) {
-        console.log(error)
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(error.message, 400)
-    } else {
-        next()
-    }
-}
 
 
-router.post('/', validateReview, loggedIn ,catchAsync(async (req, res) => {
+router.post('/', loggedIn,  validateReview ,catchAsync(async (req, res) => {
     const id  = req.params.id
     const campground = await Campground.findById(id).populate('reviews')
+    if(!campground) {
+        req.flash('error', 'Campground Not Fount')
+        res.redirect('/campgrounds')
+    }
     const review = new Review(req.body.review)
     campground.reviews.push(review)
+    review.author = req.user._id
     await review.save()
     await campground.save()
     req.flash('success', 'Created New Review')

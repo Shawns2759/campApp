@@ -33,7 +33,8 @@ const seedDB = async () => {
             location: location,
             image: image,
             description: desc, 
-            price: price
+            price: price,
+            author: '60ff3207018470303fa1f8b8'
     })
         camp.save();
     }
@@ -43,5 +44,5 @@ const seedDB = async () => {
     console.log(foundCamp)
 }
 seedDB().then(() => {
-    mongoose.connection.open()
+    mongoose.connection.closed
 })

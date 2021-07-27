@@ -62,6 +62,8 @@ const sessionConfig = {
 }
 //makes session and configs it to sessionConfig
 app.use(session(sessionConfig))
+
+
 //setting up passport
 app.use(passport.initialize())
 app.use(passport.session())
@@ -77,9 +79,11 @@ app.get('/user', async (req, res) => {
 })
 
 app.use((req, res, next) => {
-    //sets a local var in views sucess is === success thrown after new form completion check campground routes new 
+    //sets a local var in views sucess is === success thrown after new form completion check campground routes new / gives all templetes acces 
     res.locals.success = req.flash('success')
     res.locals.error = req.flash('error')
+    res.locals.currentUser = req.user
+    console.log(req.session.returnTo, req.session)
     next()
 })
 //imports campgrounds router form campgrounds and prefixes it with '/campgrounds'
