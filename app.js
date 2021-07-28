@@ -1,7 +1,12 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config()
+}
+
+
 const express = require('express');
 const app = express();
 const path = require('path')
-// const Campground = require('./models/campground')
+// const Campgro und = require('./models/campground')
 const methodOverride = require('method-override')
 const mongoose = require('mongoose')
 const ejsMate = require('ejs-mate')

@@ -7,9 +7,12 @@ module.exports.index = async (req, res) => {
 
 module.exports.newCampground = async (req, res, next) => {
     const newCamp = new Campground(req.body.campground);
+        //breaks down files object and [uts url and filename into array ]
+        newCamp.images = req.files.map(f =>({url: f.path, filename: f.filename}))
     //associated campground author(ref user) with the user id saved in req by passport
     newCamp.author = req.user._id
     await newCamp.save()
+    console.log(newCamp ,newCamp.images)
     req.flash('success','Succesfully made a new campground!' )
     res.redirect(`campgrounds/${newCamp.id}`)
 }
