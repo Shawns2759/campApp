@@ -29,7 +29,7 @@
 
     </div>
     <h5>Author: <%= campground.author.username  %> </h5>
-    <% if(currentUser){%> 
+    <% if(currentUser){%>
     <form action="/campgrounds/<%= campground.id%>/reviews" method="POST" class="validatedForm" novalidate>
       <h2>**Leave a Review**</h2>
       <div class="mb-1 mt-5">
@@ -46,7 +46,7 @@
       </div>
       <button class="btn btn-success">Submit</button>
     </form>
-  <% } %> 
+    <% } %>
   </div>
   <div class="col-3">
     <div class="row">
@@ -57,10 +57,13 @@
         <h5 class="card-title">
           Rating: <%= review.rating %>
         </h5>
+        <h6 class="card-subtitle">reviewed by: <%= review.author.username %> </h6>
         <p class="card-body"><%= review.body %></p>
         <span class="border border-black text-end">
           <form action="/campgrounds/<%= campground.id%>/reviews/<%= review.id%>?_method=DELETE" method="POST">
+            <% if( currentUser && review.author.id === currentUser.id){ %>
             <button class="btn btn-danger">Delete</button>
+            <% } %>
           </form>
         </span>
       </div>
