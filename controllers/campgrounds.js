@@ -13,7 +13,7 @@ module.exports.newCampground = async (req, res, next) => {
     req.flash('success','Succesfully made a new campground!' )
     res.redirect(`campgrounds/${newCamp.id}`)
 }
-module.exports.renderNewForm = (req, res) => {
+module.exports.renderNew = (req, res) => {
     res.render('campgrounds/new.ejs')
 }
 

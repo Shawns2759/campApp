@@ -10,6 +10,9 @@ const ExpressError = require('./utils/ExpressError.js')
 const { campgroundSchema, reviewSchema } = require('./schemas')
 const session = require('express-session')
 const flash = require('connect-flash')
+// const multer  = require('multer')
+// const upload = multer({ dest: 'uploads/' })
+
 // const Review = require('./models/review')
 
 // routes
