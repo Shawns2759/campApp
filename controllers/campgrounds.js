@@ -1,5 +1,5 @@
 const Campground = require('../models/campground')
-
+const {cloudinary} = require('../cloudinary/index')
 module.exports.index = async (req, res) => {
     const campgrounds = await Campground.find({})
     res.render('campgrounds/index.ejs', {campgrounds})
@@ -29,12 +29,15 @@ module.exports.showCampground = async (req, res) => {
             path: 'author'
         }
     }).populate('author')
+    console.log(campground.images)
     res.render('campgrounds/show.ejs', {campground})
 }
 
 module.exports.renderEditForm = async (req, res) => {
     const { id } = req.params
     const campground = await Campground.findById(id);
+    console.log(campground.images + 'THUMBNAILLLLL')
+    
     if (!campground) {
         req.flash('error', 'Campground Not Found')
         return res.redirect('/campgrounds')
@@ -52,6 +55,22 @@ module.exports.updateCampground = async (req, res) => {
             image: image, 
             price: price
         }, { new: true })
+     //breaks down files object and [uts url and filename into array ]
+    const images = (req.files.map(f => ({ url: f.path, filename: f.filename })))
+    //passes data from images arr and pases it into campground.images
+    updatedCamp.images.push(...images)
+    if (req.body.deleteImages) {
+        // if there are filepaths in deleteimages loop through them and destroy them 
+        for (let filename of req.body.deleteImages) {
+            console.log(filename + 'DESTROY FILENAME')
+            await cloudinary.uploader.destroy(filename)
+            console.log(filename  + 'AFTERRRRRRR')
+        }
+        //if there are images to be deleted, pull from images array where the filename is in req.body.deleteImages array
+        await updatedCamp.updateOne({$pull: {images: {filename: {$in: req.body.deleteImages}}}})
+    }
+    await updatedCamp.save()
+        console.log(updatedCamp)
         req.flash('success','Succesfully Edited Campground')
         res.redirect(`/campgrounds/${updatedCamp.id}`)
 }

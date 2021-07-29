@@ -26,12 +26,20 @@ const seedDB = async () => {
         const price = Math.floor(Math.random() * 100);
         let location = await `${cities[randomNum].city}, ${cities[randomNum].state}`
         let name = await `${sample(descriptors)} ${sample(places)}`
-        let image = 'https://source.unsplash.com/collection/483251'
+        let images = [{
+            url: 'https://res.cloudinary.com/shawn27599999990987/image/upload/v1627514565/YelpCamp/pwbno5qfejy94wzbgs6x.jpg',
+            filename: 'YelpCamp/pwbno5qfejy94wzbgs6x'
+          },
+          {
+            url: 'https://res.cloudinary.com/shawn27599999990987/image/upload/v1627514565/YelpCamp/no0swjvvhr1egb5bzpry.jpg',
+            filename: 'YelpCamp/no0swjvvhr1egb5bzpry'
+          }]
+            
         let desc = `Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit distinctio libero et doloremque exercitationem, consectetur temporibus quis vitae sunt animi sed unde doloribus quod quae id, voluptate odio, alias cumque?`
         const camp = new Campground({
             title: name,
             location: location,
-            image: image,
+            images: images,
             description: desc, 
             price: price,
             author: '60ff3207018470303fa1f8b8'
