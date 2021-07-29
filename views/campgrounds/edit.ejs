@@ -53,8 +53,8 @@
                     <label for="image-<%=i%>">Delete</label>
                     <!-- check box for deleting images uses filename to delete file from cloudinary any value that is checked is added to deleteImages[]-->
                     <input type="checkbox" id="image-<%=i%>" name="deleteImages[]" value="<%=img.filename%>">
-                </div> 
-                <% let currentImg = img.url.replace('/upload', '/upload/w_200') %> 
+                </div>
+                <% let currentImg = img.url.replace('/upload', '/upload/w_200') %>
                 <%= currentImg  %>
                 <img src='<%=currentImg%>' alt="">
                 <% i ++ %>

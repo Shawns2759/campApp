@@ -1,12 +1,24 @@
 const Campground = require('../models/campground')
-const {cloudinary} = require('../cloudinary/index')
+const { cloudinary } = require('../cloudinary/index')
+
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding')
+const mapBoxToken = process.env.MAPBOX_TOKEN
+const geocoder = mbxGeocoding({ accessToken: mapBoxToken })
+
 module.exports.index = async (req, res) => {
     const campgrounds = await Campground.find({})
     res.render('campgrounds/index.ejs', {campgrounds})
 }
 
 module.exports.newCampground = async (req, res, next) => {
+    const geoData = await geocoder.forwardGeocode({
+        query: req.body.campground.location,
+        limit: 1
+    }).send()
+       
     const newCamp = new Campground(req.body.campground);
+    //sets geometry field to data brought back from mapbox, access by grometry.coordiates
+    newCamp.geometry = geoData.body.features[0].geometry
         //breaks down files object and [uts url and filename into array ]
         newCamp.images = req.files.map(f =>({url: f.path, filename: f.filename}))
     //associated campground author(ref user) with the user id saved in req by passport
@@ -37,7 +49,7 @@ module.exports.renderEditForm = async (req, res) => {
     const { id } = req.params
     const campground = await Campground.findById(id);
     console.log(campground.images + 'THUMBNAILLLLL')
-    
+
     if (!campground) {
         req.flash('error', 'Campground Not Found')
         return res.redirect('/campgrounds')

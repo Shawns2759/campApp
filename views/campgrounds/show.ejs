@@ -26,6 +26,8 @@
         </button>
       <% } %> 
       </div>
+
+     
       <div class="card-body">
         <h5 class="card-title"><%= campground.title %></h5>
         <p class="card-text"><%= campground.description  %></p>
@@ -86,6 +88,16 @@
   </div>
   <div class="col-3">
     <div class="row">
+      <div id='map' style='width: 400px; height: 300px;'></div>
+      <script>
+      mapboxgl.accessToken = 'pk.eyJ1Ijoic2hhd25zMjc1OSIsImEiOiJja3JwZHdqenMwNjByMm9wb2t2dnNjMjIzIn0.U55ET1sFBpbu3_Tgh_03_w';
+      var map = new mapboxgl.Map({
+          container: 'map', // container ID
+          style: 'mapbox://styles/mapbox/streets-v11', // style URL
+          center: [-74.5, 40], // starting position [lng, lat]
+          zoom: 9 // starting zoom
+      });
+      </script>
       <h2>Reviews</h2>
 
       <% for(review of campground.reviews) { %>
