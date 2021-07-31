@@ -1,6 +1,7 @@
 <% layout('/layouts/boilerplate') %>
 <link rel="stylesheet" href="/styles/stars.css">
 
+
 <div class="row justify-content-center m-5">
   <div class="col-9">
 
@@ -88,16 +89,9 @@
   </div>
   <div class="col-3">
     <div class="row">
+
       <div id='map' style='width: 400px; height: 300px;'></div>
-      <script>
-      mapboxgl.accessToken = 'pk.eyJ1Ijoic2hhd25zMjc1OSIsImEiOiJja3JwZHdqenMwNjByMm9wb2t2dnNjMjIzIn0.U55ET1sFBpbu3_Tgh_03_w';
-      var map = new mapboxgl.Map({
-          container: 'map', // container ID
-          style: 'mapbox://styles/mapbox/streets-v11', // style URL
-          center: [-74.5, 40], // starting position [lng, lat]
-          zoom: 9 // starting zoom
-      });
-      </script>
+    
       <h2>Reviews</h2>
 
       <% for(review of campground.reviews) { %>
@@ -121,3 +115,11 @@
     </div>
   </div>
 </div>
+
+<script> 
+  // uses ejs to create a js variable that i access in my js public showmap file to config map 
+  const mapToken = '<%-process.env.MAPBOX_TOKEN%>'
+  // stringify needed for compiled js
+  const campground = <%- JSON.stringify(campground) %>
+  </script>
+<script src="/js/showMap.js"></script>
