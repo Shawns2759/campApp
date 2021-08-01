@@ -15,6 +15,7 @@ const ExpressError = require('./utils/ExpressError.js')
 const { campgroundSchema, reviewSchema } = require('./schemas')
 const session = require('express-session')
 const flash = require('connect-flash')
+const dbUrl = process.env.DB_URL
 // const multer  = require('multer')
 // const upload = multer({ dest: 'uploads/' })
 
@@ -36,7 +37,13 @@ mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useFindAndModify: false
 
 });
+// mongoose.connect(dbUrl, {
+//     useNewUrlParser: true,
+//     useCreateIndex: true,
+//     useUnifiedTopology: true,
+//     useFindAndModify: false
 
+// });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
