@@ -26,6 +26,7 @@ module.exports.newCampground = async (req, res, next) => {
             return res.redirect('/campgrounds/new')
         }
         newCamp.geometry = geoData.body.features[0].geometry
+        
 
             //breaks down files object and [uts url and filename into array ]
             newCamp.images = req.files.map(f =>({url: f.path, filename: f.filename}))
@@ -46,7 +47,6 @@ module.exports.renderNew = (req, res) => {
 
 module.exports.showCampground = async (req, res) => {
     const { id } = req.params
-  
     
     //find campground then populate reviews then on each review populate the review-author //then populate one author of campground
     const campground = await Campground.findById(id).populate({

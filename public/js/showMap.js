@@ -8,5 +8,11 @@ console.log( campground.geometry.coordinates)
   });
 
   new mapboxgl.Marker()
-  .setLngLat(campground.geometry.coordinates)
+      .setLngLat(campground.geometry.coordinates)
+      .setPopup(
+          new mapboxgl.Popup({ offset: 25 })
+              .setHTML(
+              `<h6>${campground.title}</h6>`
+          )
+      )
   .addTo(map);

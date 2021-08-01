@@ -21,7 +21,7 @@ const seedDB = async () => {
     const sample = array => array[Math.floor(Math.random()* array.length)]
 
     //lopps 50 times concatonates random city/state then saves it to db using campground model
-    for (let i = 1; i < 50; i++){
+    for (let i = 1; i < 150; i++){
         const randomNum = Math.floor(Math.random() * 1000);
         const price = Math.floor(Math.random() * 100);
         let location = await `${cities[randomNum].city}, ${cities[randomNum].state}`
@@ -42,7 +42,15 @@ const seedDB = async () => {
             images: images,
             description: desc, 
             price: price,
-            author: '60ff3207018470303fa1f8b8'
+            //shawn user id
+            author: '60ff3207018470303fa1f8b8',
+            geometry: {
+                type: "Point",
+                coordinates: [
+                    cities[randomNum].longitude,
+                    cities[randomNum].latitude
+                ]
+            }
     })
         camp.save();
     }
