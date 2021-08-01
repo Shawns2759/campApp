@@ -1,7 +1,9 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 const Review = require('./review')
-
+const opts = {
+    toJson: { virtuals: true }
+}
 const ImageSchema = new Schema({
         url: String, 
         filename: String
@@ -38,9 +40,12 @@ const CampgroundSchema = new Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Review'
         }
-    ]
+    ], 
+}, opts)
+//adds properites object to campground schema woith popupmarkup that returns premade markup for client side popup map tag
+CampgroundSchema.virtual('properties.popUpMarkup').get(function(){
+    return `<a href="/campgrounds/${this._id}">${this.title}</a>`
 })
-
 //when findoneandelete is called this is the middlewear, it runs post exicution, doc is what was deleted
 CampgroundSchema.post('findOneAndDelete', async function (doc) {
     if (doc) {

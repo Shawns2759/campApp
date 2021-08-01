@@ -13,6 +13,7 @@
         <div class="col-md-8">
             <div class="card-body">
                 <h5 class="card-title">
+                    <h3><%= camp.properties.popUpMarkup  %> </h3>
                     <a href="/campgrounds/<%= camp.id %> "><%= camp.title %></a>
                 </h5>
                 <p class="card-text">
@@ -33,6 +34,8 @@
     const mapToken = '<%-process.env.MAPBOX_TOKEN%>'
 </script>
 <script>
-    const campgrounds = {features: <%- JSON.stringify(campgrounds) %>} 
+    const campgrounds = {
+        features: <%-JSON.stringify(campgrounds)%>
+    }
 </script>
 <script src="js/clusterMap.js"></script>
