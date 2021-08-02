@@ -56,6 +56,7 @@
                 </div>
                 <% let currentImg = img.url.replace('/upload', '/upload/w_200') %>
                 <%= currentImg  %>
+                <%= img.filename%> 
                 <img src='<%=currentImg%>' alt="">
                 <% i ++ %>
                 <% } %>

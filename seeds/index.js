@@ -27,13 +27,30 @@ const seedDB = async () => {
         let location = await `${cities[randomNum].city}, ${cities[randomNum].state}`
         let name = await `${sample(descriptors)} ${sample(places)}`
         let images = [{
-            url: 'https://res.cloudinary.com/shawn27599999990987/image/upload/v1627514565/YelpCamp/pwbno5qfejy94wzbgs6x.jpg',
-            filename: 'YelpCamp/pwbno5qfejy94wzbgs6x'
-          },
-          {
-            url: 'https://res.cloudinary.com/shawn27599999990987/image/upload/v1627514565/YelpCamp/no0swjvvhr1egb5bzpry.jpg',
-            filename: 'YelpCamp/no0swjvvhr1egb5bzpry'
-          }]
+        //     url: 'https://res.cloudinary.com/shawn27599999990987/image/upload/w_200/v1627920204/YelpCamp/dapqz4h6mwlmpjigz1mq.jpg',
+        //     filename: ' YelpCamp/dapqz4h6mwlmpjigz1mq'
+        // },
+        //     {
+        //         url:'https://res.cloudinary.com/shawn27599999990987/image/upload/w_200/v1627920473/YelpCamp/ize75rsasvwvgv5umfsv.jpg',
+        //         filename: 'YelpCamp/ize75rsasvwvgv5umfsv'
+        //     }
+            
+                url: 'https://res.cloudinary.com/shawn27599999990987/image/upload/w_200/v1627920745/YelpCamp/mne4rg25gr7fnmm1ymjt.jpg',
+               filename: 'YelpCamp/ mne4rg25gr7fnmm1ymjt'
+            },
+            {
+                url: 'https://res.cloudinary.com/shawn27599999990987/image/upload/w_200/v1627920784/YelpCamp/ijrnbclmvxtm6yoehoho.jpg',
+                filename: 'YelpCamp/ ijrnbclmvxtm6yoehoho'
+            }
+
+        //     url: 'https://res.cloudinary.com/shawn27599999990987/image/upload/v1627514565/YelpCamp/pwbno5qfejy94wzbgs6x.jpg',
+        //     filename: 'YelpCamp/pwbno5qfejy94wzbgs6x'
+        //   },
+        //   {
+        //     url: 'https://res.cloudinary.com/shawn27599999990987/image/upload/v1627514565/YelpCamp/no0swjvvhr1egb5bzpry.jpg',
+        //     filename: 'YelpCamp/no0swjvvhr1egb5bzpry'
+        //   }
+        ]
             
         let desc = `Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit distinctio libero et doloremque exercitationem, consectetur temporibus quis vitae sunt animi sed unde doloribus quod quae id, voluptate odio, alias cumque?`
         const camp = new Campground({
