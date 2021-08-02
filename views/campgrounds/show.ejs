@@ -6,8 +6,6 @@
   <div class="col-9">
 
     <div class="card">
-      <h1><%= campground.id %> </h1>
-
       <div id="carouselExampleIndicators" class="carousel slide card-img-top" data-bs-ride="carousel">
         <div class="carousel-inner">
           <% campground.images.forEach((img, i) => { %> 
@@ -91,9 +89,10 @@
     <div class="row">
 
       <div id='map' style='width: 400px; height: 300px;'></div>
+      <h6><%= campground.geometry.coordinates  %> </h6>
     
       <h2>Reviews</h2>
-      <h3><%= campground.geometry.coordinates  %> </h3>
+     
 
       <% for(review of campground.reviews) { %>
       <div class="card">
