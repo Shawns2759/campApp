@@ -16,6 +16,9 @@ const { campgroundSchema, reviewSchema } = require('./schemas')
 const session = require('express-session')
 const flash = require('connect-flash')
 const dbUrl = process.env.DB_URL
+const mongoSanitize = require('express-mongo-sanitize')
+const helmet = require('helmet')
+const MongoStore = require("connect-mongo")
 // const multer  = require('multer')
 // const upload = multer({ dest: 'uploads/' })
 
@@ -30,20 +33,20 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local')
 const User = require('./models/user')
 
-mongoose.connect('mongodb://localhost:27017/yelp-camp', {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false
-
-});
-// mongoose.connect(dbUrl, {
+// mongoose.connect('mongodb://localhost:27017/yelp-camp', {
 //     useNewUrlParser: true,
 //     useCreateIndex: true,
 //     useUnifiedTopology: true,
 //     useFindAndModify: false
 
 // });
+mongoose.connect(dbUrl, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+
+});
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
@@ -60,17 +63,23 @@ app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 //serves static files from public
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(mongoSanitize())
 
-
-
+const store = new MongoStore({
+    url: dbUrl,
+    secret: 'secret',
+    touchAfter: 24 * 60 * 60
+})
 
 const sessionConfig = {
+    name: 'sesh',
     secret: 'secret',
     resave: false, 
     saveUninitialized: true,
     cookie: {
         //cookie settings expires in a week max age: week http only dosent allow css
         httpOnly: true,
+        // secure: true, 
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
@@ -86,12 +95,8 @@ passport.use(new LocalStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 app.use(flash())
+app.use(helmet({contentSecurityPolicy: false}))
 
-app.get('/user', async (req, res) => {
-    const user = new User({ email: 'srs@gmail.com}', username: 'srs' } )
-    const newUser = await User.register(user, 'srsPass')
-    res.send(newUser)
-})
 
 app.use((req, res, next) => {
     //sets a local var in views sucess is === success thrown after new form completion check campground routes new / gives all templetes acces 
@@ -100,6 +105,11 @@ app.use((req, res, next) => {
     res.locals.currentUser = req.user
     console.log(req.session.returnTo, req.session)
     next()
+})
+
+//landing page route
+app.get('/home', (req, res) => {
+    res.render('home.ejs')
 })
 //imports campgrounds router form campgrounds and prefixes it with '/campgrounds'
 app.use('/campgrounds', campgroundRoutes)
