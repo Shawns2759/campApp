@@ -18,7 +18,7 @@ const flash = require('connect-flash')
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp'
 const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require('helmet')
-const MongoStore = require('connect-mongo')(session);
+// const MongoStore = require('connect-mongo').default;
 const secret = process.env.SECRET || 'secret'
 // const multer  = require('multer')
 // const upload = multer({ dest: 'uploads/' })
@@ -34,13 +34,6 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local')
 const User = require('./models/user')
 
-// mongoose.connect('mongodb://localhost:27017/yelp-camp', {
-//     useNewUrlParser: true,
-//     useCreateIndex: true,
-//     useUnifiedTopology: true,
-//     useFindAndModify: false
-
-// });
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -66,16 +59,16 @@ app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(mongoSanitize())
 
-const store = new MongoStore({
-    url: dbUrl,
-    secret: secret,
-    touchAfter: 24 * 60 * 60
-})
-store.on("error", function(e) {
-    console.log("session store error")
-})
+// const store = MongoStore.create({
+//     url: dbUrl,
+//     secret: secret,
+//     touchAfter: 24 * 60 * 60
+// })
+// store.on("error", function(e) {
+//     console.log("session store error")
+// })
 const sessionConfig = {
-    store, 
+    // store, 
     name: 'sesh',
     secret: secret,
     resave: false, 
