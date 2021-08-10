@@ -1,10 +1,12 @@
 {
-  "name": "YelpCamp",
+  "name": "yelpCamp",
   "version": "1.0.0",
-  "description": "",
+  "description": "mvp for other business. build to learn express.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+
   },
   "keywords": [],
   "author": "",
