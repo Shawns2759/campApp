@@ -27,7 +27,7 @@ module.exports.newCampground = async (req, res, next) => {
         }
         newCamp.geometry = geoData.body.features[0].geometry
         
-
+        console.log(req.images)
             //breaks down files object and [uts url and filename into array ]
             newCamp.images = req.files.map(f =>({url: f.path, filename: f.filename}))
         //associated campground author(ref user) with the user id saved in req by passport
