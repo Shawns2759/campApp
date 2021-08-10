@@ -15,10 +15,11 @@ const ExpressError = require('./utils/ExpressError.js')
 const { campgroundSchema, reviewSchema } = require('./schemas')
 const session = require('express-session')
 const flash = require('connect-flash')
-const dbUrl = process.env.DB_URL
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp'
 const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require('helmet')
-const MongoStore = require("connect-mongo")
+const MongoStore = require("connect-mongo")(session)
+const secret = process.env.SECRET || 'secret'
 // const multer  = require('multer')
 // const upload = multer({ dest: 'uploads/' })
 
@@ -67,13 +68,16 @@ app.use(mongoSanitize())
 
 const store = new MongoStore({
     url: dbUrl,
-    secret: 'secret',
+    secret: secret,
     touchAfter: 24 * 60 * 60
 })
-
+store.on("error", function(e) {
+    console.log("session store error")
+})
 const sessionConfig = {
+    store, 
     name: 'sesh',
-    secret: 'secret',
+    secret: secret,
     resave: false, 
     saveUninitialized: true,
     cookie: {
