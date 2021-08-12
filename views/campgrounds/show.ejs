@@ -8,48 +8,38 @@
     <div class="card">
       <div id="carouselExampleIndicators" class="carousel slide card-img-top" data-bs-ride="carousel">
         <div class="carousel-inner">
-          <% campground.images.forEach((img, i) => { %> 
-            <div class="carousel-item <%= i === 0 ? 'active':''%>">
-              <img src="<%=img.url%>" class="d-block w-100" alt="">
-            </div>
-            <% }) %> 
+          <% campground.images.forEach((img, i) => { %>
+          <div class="carousel-item <%= i === 0 ? 'active':''%>">
+            <img src="<%=img.url%>" class="d-block w-100" alt="">
+          </div>
+          <% }) %>
         </div>
-        <%if(campground.images.length > 1){ %> 
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <%if(campground.images.length > 1){ %>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+          data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Previous</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+          data-bs-slide="next">
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
         </button>
-      <% } %> 
+        <% } %>
       </div>
 
-     
+
       <div class="card-body">
         <h5 class="card-title"><%= campground.title %></h5>
         <p class="card-text"><%= campground.description  %></p>
         <p class="card-text border border-black">$<%= campground.price %></p>
-        <p class="card-text"><%= campground.location %></p>
-        <!--if a current user exists and if campgorund author id passed from route === currentUser.Id from session then show edit/delete btns  -->
-        <% if( currentUser && campground.author.id === currentUser.id){ %>
-        <span>
-          <a href="/campgrounds/<%= campground.id %>/edit " class="btn btn-primary d-inline-block">Edit</a>
-          <form class=" d-inline-block" action="/campgrounds/<%=campground.id%>?_method=DELETE" method="POST">
-            <button class="btn btn-danger">Delete</button>
-          </form>
-          <a href="/campgrounds" class="btn btn-primary d-inline-block">Home</a>
-        </span>
-        <%} %>
+
+     
       </div>
     </div>
 
 
-    <div class="col-6">
 
-    </div>
-    
     <% if(currentUser){%>
     <form action="/campgrounds/<%= campground.id%>/reviews" method="POST" class="validatedForm" novalidate>
       <h2>**Leave a Review**</h2>
@@ -58,7 +48,8 @@
           <fieldset class="starability-basic">
             <legend>Rating:</legend>
             <!--review[rating] appends ontp req obj -->
-            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked
+              aria-label="No rating." />
             <input type="radio" id="first-rate1" name="review[rating]" value="1" />
             <label for="first-rate1" title="Terrible">1 star</label>
             <input type="radio" id="first-rate2" name="review[rating]" value="2" />
@@ -90,9 +81,9 @@
 
       <div id='map' style='width: 400px; height: 300px;'></div>
       <h6><%= campground.geometry.coordinates  %> </h6>
-    
+
       <h2>Reviews</h2>
-     
+
 
       <% for(review of campground.reviews) { %>
       <div class="card">
@@ -116,10 +107,10 @@
   </div>
 </div>
 
-<script> 
+<script>
   // uses ejs to create a js variable that i access in my js public showmap file to config map 
   const mapToken = '<%-process.env.MAPBOX_TOKEN%>'
   // stringify needed for compiled js
-  const campground = <%- JSON.stringify(campground) %>
-  </script>
+  const campground = <%-JSON.stringify(campground) %>
+</script>
 <script src="/js/showMap.js"></script>

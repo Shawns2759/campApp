@@ -50,9 +50,9 @@ const seedDB = async () => {
         let randd = Math.floor(Math.random() * images.length)
         for (img of images){
             imgArr.push(images[randd])
-            console.log(imgArr)
+            // console.log(imgArr)
         }
-        let desc = `Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit distinctio libero et doloremque exercitationem, consectetur temporibus quis vitae sunt animi sed unde doloribus quod quae id, voluptate odio, alias cumque?`
+        let desc = `Come to our beautiful campground! it is chalked full of amazing family fun. You can go for a stroll in the woods or have a campfire. Trust me you will not regret it.`
         const camp = new Campground({
             title: name,
             location: location,
@@ -71,11 +71,7 @@ const seedDB = async () => {
     })
         camp.save();
     }
-
-    //makes sure db is writing
-    let foundCamp = await Campground.find()
-    console.log(foundCamp)
 }
 seedDB().then(() => {
-    mongoose.connection.close
+    mongoose.connection.open
 })
