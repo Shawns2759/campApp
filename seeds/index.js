@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const Campground = require('../models/campground')
 const cities = require('./cities');
 const { descriptors, places } = require('./seedHelpers')
-mongoose.connect('mongodb://localhost:27017/yelp-camp', {
+require('dotenv').config()
+mongoose.connect(process.env.DB_URL,{
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
@@ -26,33 +27,32 @@ const seedDB = async () => {
         const price = Math.floor(Math.random() * 100);
         let location = await `${cities[randomNum].city}, ${cities[randomNum].state}`
         let name = await `${sample(descriptors)} ${sample(places)}`
-        let images = [{
-        //     url: 'https://res.cloudinary.com/shawn27599999990987/image/upload/w_200/v1627920204/YelpCamp/dapqz4h6mwlmpjigz1mq.jpg',
-        //     filename: ' YelpCamp/dapqz4h6mwlmpjigz1mq'
-        // },
-        //     {
-        //         url:'https://res.cloudinary.com/shawn27599999990987/image/upload/w_200/v1627920473/YelpCamp/ize75rsasvwvgv5umfsv.jpg',
-        //         filename: 'YelpCamp/ize75rsasvwvgv5umfsv'
-        //     }
-            
-                url: 'https://res.cloudinary.com/shawn27599999990987/image/upload/w_200/v1627920745/YelpCamp/mne4rg25gr7fnmm1ymjt.jpg',
-               filename: 'YelpCamp/ mne4rg25gr7fnmm1ymjt'
+        let images = [
+            {
+            url: 'https://res.cloudinary.com/shawn27599999990987/image/upload/v1628618965/YelpCamp/tb0qexzoqjfsutjrsol1.jpg',
+            filename: 'YelpCamp/tb0qexzoqjfsutjrsol1',
             },
             {
-                url: 'https://res.cloudinary.com/shawn27599999990987/image/upload/w_200/v1627920784/YelpCamp/ijrnbclmvxtm6yoehoho.jpg',
-                filename: 'YelpCamp/ ijrnbclmvxtm6yoehoho'
+                url: 'https://res.cloudinary.com/shawn27599999990987/image/upload/v1628619909/YelpCamp/arpybidj2b3s0znrgivq.jpg',
+                filename: 'YelpCamp/arpybidj2b3s0znrgivq'
+            },
+            {
+                url: 'https://res.cloudinary.com/shawn27599999990987/image/upload/v1628620086/YelpCamp/hhxft3ecquq0jayrlhvi.jpg',
+                filename: 'YelpCamp/hhxft3ecquq0jayrlhvi'
+            },
+            {
+                url: 'https://res.cloudinary.com/shawn27599999990987/image/upload/v1628620156/YelpCamp/agqielu9fk5kmv9aizoy.jpg',
+                filename: 'YelpCamp/agqielu9fk5kmv9aizoy'
             }
 
-        //     url: 'https://res.cloudinary.com/shawn27599999990987/image/upload/v1627514565/YelpCamp/pwbno5qfejy94wzbgs6x.jpg',
-        //     filename: 'YelpCamp/pwbno5qfejy94wzbgs6x'
-        //   },
-        //   {
-        //     url: 'https://res.cloudinary.com/shawn27599999990987/image/upload/v1627514565/YelpCamp/no0swjvvhr1egb5bzpry.jpg',
-        //     filename: 'YelpCamp/no0swjvvhr1egb5bzpry'
-        //   }
         ]
-            
-        let desc = `Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit distinctio libero et doloremque exercitationem, consectetur temporibus quis vitae sunt animi sed unde doloribus quod quae id, voluptate odio, alias cumque?`
+        let imgArr = []
+        let randd = Math.floor(Math.random() * images.length)
+        for (img of images){
+            imgArr.push(images[randd])
+            // console.log(imgArr)
+        }
+        let desc = `Come to our beautiful campground! it is chalked full of amazing family fun. You can go for a stroll in the woods or have a campfire. Trust me you will not regret it.`
         const camp = new Campground({
             title: name,
             location: location,
@@ -60,7 +60,7 @@ const seedDB = async () => {
             description: desc, 
             price: price,
             //shawn user id
-            author: '60ff3207018470303fa1f8b8',
+            author: '61119c1143411f963c899887',
             geometry: {
                 type: "Point",
                 coordinates: [
@@ -71,11 +71,7 @@ const seedDB = async () => {
     })
         camp.save();
     }
-
-    //makes sure db is writing
-    let foundCamp = await Campground.find()
-    console.log(foundCamp)
 }
 seedDB().then(() => {
-    mongoose.connection.closed
+    mongoose.connection.open
 })
