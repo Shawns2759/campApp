@@ -9,6 +9,6 @@
 #### Cloudinary for storage bucket
 #### Heroku for deployment
 <br>
-##Built as an Alternative to [Hipcamp](https://www.hipcamp.com/en-US)
+## Built as an Alternative to [Hipcamp](https://www.hipcamp.com/en-US)
 <br>
 ## See it live [here](https://tent-camp-app.herokuapp.com/)
