@@ -8,6 +8,8 @@
 
 * Restful Routes Using Express and Express Router
 
+* Passport for user auth 
+
 * MongoDb and Mongoose for database/orm
 
 * Joi for BE validation
