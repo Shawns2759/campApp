@@ -24,5 +24,5 @@
 
 <br>
 
-### See it live [here](https://tent-camp-app.herokuapp.com/)
+### See it live [here](https://tent-camp-app.herokuapp.com/campgrounds)
 
